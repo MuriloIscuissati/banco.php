@@ -3,24 +3,6 @@
 $clientes = [];
 $contas   = [];
 
-//Cliente que sempre existe
-$cliente = [
-    "nome" => "John Doe",
-    "cpf"  => "00000000000", //11 digitos
-    "telefone" => "(45)9999999999" //10 digitos
-];
-
-$clientes[] = $cliente;
-
-
-$conta = [
-    "numeroConta" => uniqid(),
-    "cpfCliente" => "00000000000",
-    "saldo" => 0
-];
-
-$contas[] = $conta;
-
 
 function cadastrarCliente(&$clientes, string $nome, string $cpf, string $telefone): void {
     
@@ -51,6 +33,10 @@ function cadastrarConta(&$contas, $cpfCliente): string {
 
 function depositar(&$contas, $numeroConta, $quantia){
 
+    if($quantia < 0){
+        print("Não é possível depositar valores negativos");
+        return;
+    }
     foreach ($contas as &$conta){
         
         if($conta['$numeroConta' == $numeroConta]){
@@ -73,6 +59,11 @@ function sacar(&$contas, $numeroConta, $quantia){
 
         if($conta['numeroConta'] == $numeroConta){
             
+            if($quantia > $conta['saldo']){
+                print("Sua conta não tem saldo suficiente para realizar a operação.");
+                break;               
+            }
+
             $conta['saldo'] -= $quantia;
 
             print "Saque de R$$quantia realizado na conta $numeroConta";
